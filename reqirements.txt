@@ -1,6 +1,6 @@
 semantic-router==0.0.72
 groq==0.32.0
-chromadb== 1.1.1
+chromadb==1.1.1
 sentence-transformers==5.1.1
-python-dotenv== 1.1.1
+python-dotenv==1.1.1
 
