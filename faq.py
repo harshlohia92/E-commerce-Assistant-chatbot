@@ -6,34 +6,28 @@ from groq import Groq
 from dotenv import load_dotenv
 import os
 
-# -----------------------------
-# Load environment variables
-# -----------------------------
+
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_MODEL = os.getenv("GROQ_MODEL")
 
-# Initialize Groq client
+
 groq_client = Groq(api_key=GROQ_API_KEY)
 
-# -----------------------------
-# Paths and Chroma setup
-# -----------------------------
+
 faqs_path = Path(__file__).parent / "resource" / "faq_data.csv"
 
-# Initialize Chroma client
+
 chroma_client = chromadb.Client()
 collection_name_faq = 'faqs'
 
-# Embedding function
+
 ef = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name='sentence-transformers/all-MiniLM-L6-v2'
 )
 
 
-# -----------------------------
-# Ingest FAQ Data
-# -----------------------------
+
 def ingest_faq_data(path):
     """Ingest FAQs from CSV into ChromaDB."""
     existing_collections = [c.name for c in chroma_client.list_collections()]
@@ -59,9 +53,6 @@ def ingest_faq_data(path):
         print(f"⚠️ Collection '{collection_name_faq}' already exists")
 
 
-# -----------------------------
-# Retrieve relevant FAQ
-# -----------------------------
 def get_relevant_qa(query):
     """Retrieve top relevant FAQs from ChromaDB."""
     collection = chroma_client.get_collection(name=collection_name_faq)
@@ -72,9 +63,6 @@ def get_relevant_qa(query):
     return result
 
 
-# -----------------------------
-# Generate answer using Groq
-# -----------------------------
 def generate_answer(query, context):
     """Generate answer using Groq based on provided context."""
     prompt = f"""
@@ -92,9 +80,7 @@ CONTEXT: {context}
     return chat_completion.choices[0].message.content
 
 
-# -----------------------------
-# FAQ Chain
-# -----------------------------
+
 def faq_chain(query):
     """Get answer to a query using ChromaDB + Groq."""
     result = get_relevant_qa(query)
@@ -104,9 +90,7 @@ def faq_chain(query):
     return answer
 
 
-# -----------------------------
-# Main
-# -----------------------------
+
 if __name__ == "__main__":
     ingest_faq_data(faqs_path)
 
