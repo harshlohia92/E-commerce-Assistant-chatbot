@@ -48,9 +48,9 @@ def ingest_faq_data(path):
             metadatas=metadata,
             ids=ids
         )
-        print(f"✅ FAQ data successfully ingested into collection '{collection_name_faq}'")
+        print(f" FAQ data successfully ingested into collection '{collection_name_faq}'")
     else:
-        print(f"⚠️ Collection '{collection_name_faq}' already exists")
+        print(f" Collection '{collection_name_faq}' already exists")
 
 
 def get_relevant_qa(query):
